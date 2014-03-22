@@ -1,19 +1,31 @@
 DESCRIPTION = "Anarchy image"
-
 LICENSE = "MIT"
 
-inherit core-image
+require anarchy-base-image.bb
 
-IMAGE_LINGUAS = " "
+IMAGE_LINGUAS = "en-gb ru-ru"
 
-ANARCHY_INSTALL = "opencv"
+DEPENDS += "packagegroup-base-extended \
+       "
 
-IMAGE_INSTALL = "busybox modutils-initscripts initscripts opkg udev sysvinit netbase base-files base-passwd \
-                 ${ROOTFS_PKGMANAGE_BOOTSTRAP} ${CORE_IMAGE_EXTRA_INSTALL} \
-                 ${ANARCHY_INSTALL} \
-                 strace dropbear binutils \
+ANARCHY_INSTALL = "opencv libpoco boost pcl" 
+ANARCHY_INSTALL += "python python3"
+
+#packagegroup-ros-world dropbear
+#task-core-boot task-core-ssh-openssh
+IMAGE_INSTALL += " \
+    packagegroup-base-extended \
+    strace \
+    binutils \
+    gdbserver \
+    mc \
+    i2c-tools \
+    iptables \
+    ${ANARCHY_INSTALL} \                 
 "
 
-IMAGE_FEATURES += "splash package-management x11-base x11-sato ssh-server-dropbear hwcodecs"
+IMAGE_FEATURES += "splash package-management debug-tweaks"
 
 LICENSE_FLAGS_WHITELIST = "commercial"
+
+export IMAGE_BASENAME = "anarchy-image"
