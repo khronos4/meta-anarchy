@@ -1,0 +1,156 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 307cccd..1237f73 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -178,7 +178,7 @@ endmacro()
+ # Cannot have same $NTA and $NuPIC
+ #
+ if("$ENV{NTA}" STREQUAL "$ENV{NUPIC}")
+-  message(FATAL_ERROR "\$NTA environment variable cannot be the same as the \$NUPIC environment variable!")
++  #message(FATAL_ERROR "\$NTA environment variable cannot be the same as the \$NUPIC environment variable!")
+ endif()
+ 
+ #
+@@ -227,15 +227,15 @@ if("${TEMP_BUILD_DIR}" STREQUAL "")
+   set(TEMP_BUILD_DIR "/tmp/ntabuild")
+ endif()
+ # CMAKE_CURRENT_BINARY_DIR is used by swig module for put wrappers on, so don't erase this line!
+-set(CMAKE_CURRENT_BINARY_DIR ${TEMP_BUILD_DIR})
++#set(CMAKE_CURRENT_BINARY_DIR ${TEMP_BUILD_DIR})
+ 
+ #
+ # Clean directories before generate files
+ #
+ # Clean '/build/release'
+-execute_process(COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_INSTALL_PREFIX})
++#execute_process(COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_INSTALL_PREFIX})
+ # Clean '/tmp/ntabuild'
+-execute_process(COMMAND ${CMAKE_COMMAND} -E remove_directory ${TEMP_BUILD_DIR})
++#execute_process(COMMAND ${CMAKE_COMMAND} -E remove_directory ${TEMP_BUILD_DIR})
+ 
+ #
+ # Update repository submodules
+@@ -340,40 +340,40 @@ message(STATUS "  Python embedding link flags: ${NTA_PLATFORM_LINKFLAGS_PYEMBED}
+ # Instead we just use a shell command to execute a simple python command, if exit code is 0 ('success') then we have python installed.
+ #
+ message(STATUS "Checking software tools...")
+-execute_process(COMMAND python --version
+-                RESULT_VARIABLE EXIT_CODE)
+-if(NOT EXIT_CODE EQUAL 0)
+-  message(FATAL_ERROR "System Python not found. You do not have a system version of Python or it is not set on environment path.")
+-endif()
++#execute_process(COMMAND python --version
++#                RESULT_VARIABLE EXIT_CODE)
++#if(NOT EXIT_CODE EQUAL 0)
++#  message(FATAL_ERROR "System Python not found. You do not have a system version of Python or it is not set on environment path.")
++#endif()
+ 
+ #
+ # Gives the version of Python necessary to get installation directories
+ # for use with ${PYTHON_VERSION}, etc.
+ #
+-execute_process(COMMAND python -c "import sys;sys.stdout.write(str(sys.version_info[0]) + '.' + str(sys.version_info[1]))"
+-                OUTPUT_VARIABLE PYTHON_VERSION)
+-if(NOT(${PYTHON_VERSION} EQUAL "2.6" OR ${PYTHON_VERSION} EQUAL "2.7"))
+-  message(FATAL_ERROR "Only these versions of Python are accepted: 2.6, 2.7")
+-endif()
++#execute_process(COMMAND python -c "import sys;sys.stdout.write(str(sys.version_info[0]) + '.' + str(sys.version_info[1]))"
++#                OUTPUT_VARIABLE PYTHON_VERSION)
++#if(NOT(${PYTHON_VERSION} EQUAL "2.6" OR ${PYTHON_VERSION} EQUAL "2.7"))
++#  message(FATAL_ERROR "Only these versions of Python are accepted: 2.6, 2.7")
++#endif()
+ 
+ #
+ # Find out where system installation of python is.
+ #
+-execute_process(COMMAND python -c "import sys;sys.stdout.write(sys.prefix)"
+-                OUTPUT_VARIABLE PYTHON_PREFIX)
+-string(REGEX REPLACE "\\\\" "/" PYTHON_PREFIX ${PYTHON_PREFIX})
+-set(PYTHON_INCLUDE_DIR "${PYTHON_PREFIX}/include/python${PYTHON_VERSION}")
+-set(PYTHON_LIBRARY_DIR "${PYTHON_PREFIX}/lib/python${PYTHON_VERSION}")
+-set(PYTHON_SITE_PACKAGES_DIR "${CMAKE_INSTALL_PREFIX}/lib/python${PYTHON_VERSION}/site-packages")
++#execute_process(COMMAND python -c "import sys;sys.stdout.write(sys.prefix)"
++#                OUTPUT_VARIABLE PYTHON_PREFIX)
++#string(REGEX REPLACE "\\\\" "/" PYTHON_PREFIX ${PYTHON_PREFIX})
++#set(PYTHON_INCLUDE_DIR "${PYTHON_PREFIX}/include/python${PYTHON_VERSION}")
++#set(PYTHON_LIBRARY_DIR "${PYTHON_PREFIX}/lib/python${PYTHON_VERSION}")
++#set(PYTHON_SITE_PACKAGES_DIR "${CMAKE_INSTALL_PREFIX}/lib/python${PYTHON_VERSION}/site-packages")
+ 
+ #
+ # Finds out version of Numpy and headers's path.
+ #
+-execute_process(COMMAND python -c "import sys;import numpy;sys.stdout.write(numpy.get_include())"
+-                OUTPUT_VARIABLE NUMPY_INCLUDE_DIR)
+-string(REGEX REPLACE "\\\\" "/" NUMPY_INCLUDE_DIR ${NUMPY_INCLUDE_DIR})
+-execute_process(COMMAND python -c "import sys;import numpy;sys.stdout.write(numpy.__version__)"
+-                OUTPUT_VARIABLE NUMPY_VERSION)
++#execute_process(COMMAND python -c "import sys;import numpy;sys.stdout.write(numpy.get_include())"
++#                OUTPUT_VARIABLE NUMPY_INCLUDE_DIR)
++#string(REGEX REPLACE "\\\\" "/" NUMPY_INCLUDE_DIR ${NUMPY_INCLUDE_DIR})
++#execute_process(COMMAND python -c "import sys;import numpy;sys.stdout.write(numpy.__version__)"
++#                OUTPUT_VARIABLE NUMPY_VERSION)
+ 
+ #
+ # Checks if Swig is installed and gets its variables.
+@@ -466,18 +466,20 @@ message(STATUS "  Release: ${CMAKE_INSTALL_PREFIX}")
+ # Allows us to find includes for external libraries and enables
+ # #include <nta/common/...>
+ #
+-set(NTA_INCLUDEFLAGS "-I${PROJECT_SOURCE_DIR} -isystem${PROJECT_SOURCE_DIR}/external/common/include -isystem${PROJECT_SOURCE_DIR}/external/${NTA_PLATFORM_OS}/include")
++#set(NTA_INCLUDEFLAGS "-I${PROJECT_SOURCE_DIR} -isystem${PROJECT_SOURCE_DIR}/external/common/include -isystem${PROJECT_SOURCE_DIR}/external/${NTA_PLATFORM_OS}/include")
++set(NTA_INCLUDEFLAGS "-I${PROJECT_SOURCE_DIR}")
+ 
+ #
+ # NTA_INTERNAL tells us that the code is being built under the build system
+ # and not as a separate program. Used for cppvision example.
+ #
+-set(NTA_CXXFLAGS_BASE "${NTA_INCLUDEFLAGS} ${NTA_PLATFORM_CXXFLAGS} -DHAVE_CONFIG_H -DNTA_INTERNAL -DNTA_PLATFORM_${NTA_PLATFORM_OS} -DBOOST_NO_WREGEX -DNUPIC2 -fvisibility=hidden -Wall -Wreturn-type -Wunused -Wno-unused-parameter")
++set(NTA_CXXFLAGS_BASE "${NTA_INCLUDEFLAGS} ${NTA_PLATFORM_CXXFLAGS} -DHAVE_CONFIG_H -DNTA_INTERNAL -DNTA_PLATFORM_${NTA_PLATFORM_OS} -DBOOST_NO_WREGEX -DNUPIC2 -fvisibility=hidden -Wall -Wreturn-type -Wunused -Wno-unused-parameter -Wno-error=narrowing")
+ 
+ #
+ # All executables and plugins are linked with these flags
+ #
+-set(NTA_LINKFLAGS "${NTA_PLATFORM_LINKFLAGS} ${NTA_PLATFORM_LIBS} -L${PROJECT_SOURCE_DIR}/external/${NTA_PLATFORM_OS}/lib")
++#set(NTA_LINKFLAGS "${NTA_PLATFORM_LINKFLAGS} ${NTA_PLATFORM_LIBS} -L${PROJECT_SOURCE_DIR}/external/${NTA_PLATFORM_OS}/lib")
++set(NTA_LINKFLAGS "${NTA_PLATFORM_LINKFLAGS} ${NTA_PLATFORM_LIBS}")
+ 
+ #
+ # Define custom preprocessor variables (#define XX in C++ code)
+@@ -619,24 +621,24 @@ set(CURRENT_SOURCE_DIR ${PROJECT_SOURCE_DIR})
+ #
+ set(LIB_STATIC_APR1 apr-1)
+ add_library(${LIB_STATIC_APR1} STATIC IMPORTED)
+-set_property(TARGET ${LIB_STATIC_APR1} PROPERTY IMPORTED_LOCATION "${PROJECT_SOURCE_DIR}/external/${NTA_PLATFORM_OS}/lib/libapr-1.${STATIC_LIB_EXTENSION}")
++set_property(TARGET ${LIB_STATIC_APR1} PROPERTY IMPORTED_LOCATION "${NUPIC_LIB_APR1}") # "${PROJECT_SOURCE_DIR}/external/${NTA_PLATFORM_OS}/lib/libapr-1.${STATIC_LIB_EXTENSION}"
+ 
+ set(LIB_STATIC_APRUTIL1 aprutil-1)
+ add_library(${LIB_STATIC_APRUTIL1} STATIC IMPORTED)
+-set_property(TARGET ${LIB_STATIC_APRUTIL1} PROPERTY IMPORTED_LOCATION "${PROJECT_SOURCE_DIR}/external/${NTA_PLATFORM_OS}/lib/libaprutil-1.${STATIC_LIB_EXTENSION}")
++set_property(TARGET ${LIB_STATIC_APRUTIL1} PROPERTY IMPORTED_LOCATION "${NUPIC_LIB_APRUTIL1}") # "${PROJECT_SOURCE_DIR}/external/${NTA_PLATFORM_OS}/lib/libaprutil-1.${STATIC_LIB_EXTENSION}")
+ 
+ set(LIB_STATIC_Z z)
+ add_library(${LIB_STATIC_Z} STATIC IMPORTED)
+-set_property(TARGET ${LIB_STATIC_Z} PROPERTY IMPORTED_LOCATION "${PROJECT_SOURCE_DIR}/external/${NTA_PLATFORM_OS}/lib/libz.${STATIC_LIB_EXTENSION}")
++set_property(TARGET ${LIB_STATIC_Z} PROPERTY IMPORTED_LOCATION "${NUPIC_LIB_Z}") # "${PROJECT_SOURCE_DIR}/external/${NTA_PLATFORM_OS}/lib/libz.${STATIC_LIB_EXTENSION}"
+ 
+ set(LIB_STATIC_YAML yaml)
+ add_library(${LIB_STATIC_YAML} STATIC IMPORTED)
+-set_property(TARGET ${LIB_STATIC_YAML} PROPERTY IMPORTED_LOCATION "${PROJECT_SOURCE_DIR}/external/${NTA_PLATFORM_OS}/lib/libyaml.${STATIC_LIB_EXTENSION}")
++set_property(TARGET ${LIB_STATIC_YAML} PROPERTY IMPORTED_LOCATION "${NUPIC_LIB_YAML}") # "${PROJECT_SOURCE_DIR}/external/${NTA_PLATFORM_OS}/lib/libyaml.${STATIC_LIB_EXTENSION}"
+ 
+ if(WINDOWS)
+   set(LIB_STATIC_PCRE pcre)
+   add_library(${LIB_STATIC_PCRE} STATIC IMPORTED)
+-  set_property(TARGET ${LIB_STATIC_PCRE} PROPERTY IMPORTED_LOCATION "${PROJECT_SOURCE_DIR}/external/${NTA_PLATFORM_OS}/lib/libpcre.${STATIC_LIB_EXTENSION}")
++  set_property(TARGET ${LIB_STATIC_PCRE} PROPERTY IMPORTED_LOCATION "${NUPIC_LIB_PCRE}") # "${PROJECT_SOURCE_DIR}/external/${NTA_PLATFORM_OS}/lib/libpcre.${STATIC_LIB_EXTENSION}"
+ endif()
+ 
+ #
+@@ -1146,5 +1148,7 @@ copy_file(${PROJECT_SOURCE_DIR}/lang/py/__init__.py ${PYTHON_SITE_PACKAGES_DIR}/
+ # This file is going to be replaced by a "documentored" version
+ copy_file(${PROJECT_SOURCE_DIR}/lang/py/engine/__init__.py ${PYTHON_SITE_PACKAGES_DIR}/nupic/engine/__init__.py)
+ 
++install(DIRECTORY ${CMAKE_INSTALL_PREFIX}/ DESTINATION ${NTA_INSTALL_PREFIX}/)
++
+ # Just to separate from result message
+ message(STATUS "")

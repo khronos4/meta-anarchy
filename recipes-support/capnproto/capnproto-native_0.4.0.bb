@@ -8,4 +8,4 @@ SRC_URI[sha256sum] = "77adfbb78f8538a453cb8c9b6e0503c1d21e2877461aa6e60d8fe04866
 
 S = "${WORKDIR}/capnproto-c++-${PV}"
 
-inherit autotools
+inherit native autotools

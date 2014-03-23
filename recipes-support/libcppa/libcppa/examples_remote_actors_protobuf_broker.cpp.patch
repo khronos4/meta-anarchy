@@ -1,0 +1,13 @@
+diff --git a/examples/remote_actors/protobuf_broker.cpp b/examples/remote_actors/protobuf_broker.cpp
+index e6f046f..a79514b 100644
+--- a/examples/remote_actors/protobuf_broker.cpp
++++ b/examples/remote_actors/protobuf_broker.cpp
+@@ -34,6 +34,8 @@
+ #include <memory>
+ #include <iostream>
+ 
++#include <netinet/in.h>
++
+ #include "cppa/cppa.hpp"
+ #include "cppa/logging.hpp"
+ #include "cppa/singletons.hpp"

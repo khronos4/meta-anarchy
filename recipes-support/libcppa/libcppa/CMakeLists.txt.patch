@@ -1,0 +1,41 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index ae8802a..b0d85c7 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1,5 +1,5 @@
+ cmake_minimum_required(VERSION 2.8)
+-project(cppa CXX)
++project(cppa CXX C)
+ 
+ set(LIBCPPA_VERSION_MAJOR 0)
+ set(LIBCPPA_VERSION_MINOR 8)
+@@ -21,6 +21,7 @@ if (CMAKE_CXX_FLAGS)
+   set(CMAKE_CXX_FLAGS_MINSIZEREL     "")
+   set(CMAKE_CXX_FLAGS_RELEASE        "")
+   set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "")
++  set(CMAKE_CXX_FLAGS                "${CMAKE_CXX_FLAGS} -std=c++11")
+ else (CMAKE_CXX_FLAGS)
+   set(CXXFLAGS_PROVIDED false)
+   set(CMAKE_CXX_FLAGS                "-std=c++11 -Wextra -Wall -pedantic")
+@@ -40,10 +41,17 @@ else (HAVE_VALGRIND_H)
+ endif (HAVE_VALGRIND_H)
+ 
+ # check for g++ >= 4.7 or clang++ > = 3.2
+-try_run(ProgramResult
+-        CompilationSucceeded
+-        ${CMAKE_BINARY_DIR} ${CMAKE_SOURCE_DIR}/get_compiler_version.cpp
+-        RUN_OUTPUT_VARIABLE CompilerVersion)
++if(NOT CMAKE_CROSSCOMPILING)
++  try_run(ProgramResult
++          CompilationSucceeded
++          ${CMAKE_BINARY_DIR} ${CMAKE_SOURCE_DIR}/get_compiler_version.cpp
++          RUN_OUTPUT_VARIABLE CompilerVersion)
++else()
++  set(CompilationSucceeded 1)
++  set(ProgramResult 0)
++  set(CompilerVersion ${LIBCPPA_COMPILER_VERSION})
++endif()
++
+ if (NOT CompilationSucceeded OR NOT ProgramResult EQUAL 0)
+   message(FATAL_ERROR "Cannot determine compiler version")
+ elseif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU")

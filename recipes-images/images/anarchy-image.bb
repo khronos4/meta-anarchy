@@ -8,20 +8,33 @@ IMAGE_LINGUAS = "en-gb ru-ru"
 DEPENDS += "packagegroup-base-extended \
        "
 
-ANARCHY_INSTALL = "opencv libpoco boost pcl" 
-ANARCHY_INSTALL += "python python3"
+ANARCHY_LIBRARIES = " \
+    opencv opencv-apps opencv-dbg opencv-dev \
+    libpoco \
+    boost boost-dbg \
+    pcl pcl-dev \
+    llvm3.3 \
+    libcppa \
+    cereal \
+"
 
-#packagegroup-ros-world dropbear
-#task-core-boot task-core-ssh-openssh
 IMAGE_INSTALL += " \
     packagegroup-base-extended \
     strace \
-    binutils \
-    gdbserver \
+    make binutils autoconf gcc gdb gdbserver \
     mc \
     i2c-tools \
     iptables \
-    ${ANARCHY_INSTALL} \                 
+    python python3 \
+    perl \
+    erlang \
+    git \
+    cmake \
+    vim \
+    nano \
+    dbus \
+    rabbitmq-server \
+    ${ANARCHY_LIBRARIES} \
 "
 
 IMAGE_FEATURES += "splash package-management debug-tweaks"
