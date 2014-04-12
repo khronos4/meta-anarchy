@@ -1,0 +1,36 @@
+--- a/deps/lua/src/Makefile	2014-04-05 14:17:20.189988407 +0300
++++ b/deps/lua/src/Makefile	2014-04-05 14:21:50.101996148 +0300
+@@ -5,18 +5,14 @@
+ # == CHANGE THE SETTINGS BELOW TO SUIT YOUR ENVIRONMENT =======================
+ 
+ # Your platform. See PLATS for possible values.
+-PLAT= none
++PLAT= linux
+ 
+-CC?= gcc
+-CFLAGS= -O2 -Wall $(MYCFLAGS)
+-AR= ar rcu
+-RANLIB= ranlib
+-RM= rm -f
+-LIBS= -lm $(MYLIBS)
+-
+-MYCFLAGS=
++MYCFLAGS=-DLUA_USE_LINUX
+ MYLDFLAGS=
+-MYLIBS=
++MYLIBS=-Wl,-E -ldl -lreadline -lhistory -lncurses
++
++CFLAGS += $(MYCFLAGS)
++LIBS += -lm $(MYLIBS)
+ 
+ # == END OF USER SETTINGS. NO NEED TO CHANGE ANYTHING BELOW THIS LINE =========
+ 
+@@ -48,7 +44,7 @@
+ a:	$(ALL_A)
+ 
+ $(LUA_A): $(CORE_O) $(LIB_O)
+-	$(AR) $@ $(CORE_O) $(LIB_O)	# DLL needs all object files
++	$(AR) rcu $@ $(CORE_O) $(LIB_O)	# DLL needs all object files
+ 	$(RANLIB) $@
+ 
+ $(LUA_T): $(LUA_O) $(LUA_A)

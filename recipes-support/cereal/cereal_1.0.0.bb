@@ -11,6 +11,7 @@ DEPENDS = "boost"
 inherit cmake
 
 do_install() {
-    install -d ${D}${includedir}
-    cp -r -u ${S}/include/* ${D}${includedir}/
+	install -d ${D}${includedir}
+	
+    cp -r -u ${S}/include/* ${D}${includedir}/    
 }

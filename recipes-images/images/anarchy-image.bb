@@ -6,17 +6,22 @@ require anarchy-base-image.bb
 IMAGE_LINGUAS = "en-gb ru-ru"
 
 DEPENDS += "packagegroup-base-extended \
-       "
+    packagegroup-qt5-toolchain-target \
+"
 
 ANARCHY_LIBRARIES = " \
     opencv opencv-apps opencv-dbg opencv-dev \
     libpoco \
     boost boost-dbg \
     pcl pcl-dev \
-    llvm3.3 \
+    llvm-clang3.4 \
     libcppa \
-    cereal \
+    capnproto \
+    zeromq \
+    libftdi \
 "
+
+# cereal
 
 IMAGE_INSTALL += " \
     packagegroup-base-extended \
@@ -34,6 +39,7 @@ IMAGE_INSTALL += " \
     nano \
     dbus \
     rabbitmq-server \
+    redis \
     ${ANARCHY_LIBRARIES} \
 "
 

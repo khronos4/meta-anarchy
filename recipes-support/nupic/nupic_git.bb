@@ -2,8 +2,7 @@ DESCRIPTION = "Numenta Platform for Intelligent Computing"
 LICENSE = "GPL"
 LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=d32239bcb673463ab874e80d47fae504"
 
-SRC_URI = "git:///mnt/storage/work/repo/nupic;rev=015c61a38aa5a549e47bf22a800b91d9d1b89c21"
-
+SRC_URI = "git://github.com/khronos666/nupic.git;rev=015c61a38aa5a549e47bf22a800b91d9d1b89c21"
 S = "${WORKDIR}/git"
 
 DEPENDS = "swig apr apr-util zlib yaml-cpp python \

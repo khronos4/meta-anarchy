@@ -1,0 +1,36 @@
+diff --git a/sys_config/a20/cubieboard2.fex b/sys_config/a20/cubieboard2.fex
+index 1436df8..df4366d 100644
+--- a/sys_config/a20/cubieboard2.fex
++++ b/sys_config/a20/cubieboard2.fex
+@@ -201,10 +201,10 @@ uart_tx = port:PA14<4><1><default><default>
+ uart_rx = port:PA15<4><1><default><default>
+ 
+ [spi0_para]
+-spi_used = 0
++spi_used = 1
+ spi_cs_bitmap = 1
+ spi_cs0 = port:PI10<2><default><default><default>
+-spi_cs1 = port:PI14<2><default><default><default>
++;spi_cs1 = port:PI14<2><default><default><default>
+ spi_sclk = port:PI11<2><default><default><default>
+ spi_mosi = port:PI12<2><default><default><default>
+ spi_miso = port:PI13<2><default><default><default>
+@@ -236,6 +236,18 @@ spi_sclk = port:PA06<3><default><default><default>
+ spi_mosi = port:PA07<3><default><default><default>
+ spi_miso = port:PA08<3><default><default><default>
+ 
++[spi_devices]
++spi_dev_num = 1
++
++[spi_board0]
++modalias = "spidev"
++max_speed_hz = 200000
++bus_num = 0
++chip_select = 0
++mode = 0
++full_duplex = 0
++manual_cs = 0
++
+ [ctp_para]
+ ctp_used = 0
+ ctp_name = "gt811"
